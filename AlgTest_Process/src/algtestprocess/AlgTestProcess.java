@@ -32,6 +32,7 @@
 package algtestprocess;
 
 import algtestjclient.DirtyLogger;
+import algtestprocess.database.Database;
 import java.io.*;
 import java.util.Scanner;
 
@@ -53,7 +54,8 @@ public class AlgTestProcess {
     public static final String GENERATE_COMPARE_TABLE = "SIMILARITY";   //SIMILARITY TABLE FOR COMPARE CARDS
     public static final String GENERATE_UNKNOWN_RESULTS = "UNKNOWN";    //RESULTS FOR UNKNOWN CARD
     public static final String GENERATE_RADAR_GRAPHS = "RADAR";         //ONE BIG TABLE FOR COMPARE CARDS      
-
+    public static final String IMRO_DEMO = "DEMO";
+    
     /**
      * @param args the command line arguments
      * First argument is part to file/folder second is type of processing
@@ -135,6 +137,9 @@ public class AlgTestProcess {
                             RunTime.generateRunTimeFile(args[0]);
                         else
                             System.out.println("ERR: Wrong path to the source file / folder.");
+                    }
+                    else if (args[1].equals(IMRO_DEMO)) {
+                        Database.runDemo();
                     }
                     else {System.err.println("Incorrect arguments!");}
                 }
