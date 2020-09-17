@@ -27,6 +27,5 @@ public class Database {
             }
         }
         
-        System.out.println(data.get(0).getMeasurement("ALG_SHA MessageDigest_doFinal()"));
     }
 }

@@ -36,10 +36,10 @@ public class ParserCSV {
     public static final int INFO_LINE_OFFSET = 5;
     
     public static PerformanceFixed parsePerformanceFixed(String path) {
-        System.out.println(path);
+        
         List<String> lines;
         PerformanceFixed results = null;
-        
+        System.out.println(path + ": ");
         try (Stream<String> input = Files.lines(Paths.get(path))) {
             lines = input.collect(Collectors.toList());
         } catch (IOException ex) {
@@ -60,6 +60,9 @@ public class ParserCSV {
             
             if (data[0].equals(METHOD_NAME_FIELD)) {
                 String methodName = data[1].strip();
+                if (!DatabaseUtils.algorithmList.contains(methodName)) {
+                    System.out.println("    " + methodName);
+                }
                 MeasurementFixed m = parseMeasurement(methodName, lines, i + 1);
                 results.putMeasurement(m);
             }
@@ -80,7 +83,7 @@ public class ParserCSV {
         operation stats (ms/op):;avg op:;5.75;min op:;5.67;max op:;5.83;
         operation info:;data length;256;total iterations;250;total invocations;250;
         */
-        System.out.println("    " + methodName);
+        
         // measurement config line
         String[] data = lines.get(index + CONFIG_LINE_OFFSET).split(";");
         if (!data[0].equals(CONFIG_FIELD)) {
