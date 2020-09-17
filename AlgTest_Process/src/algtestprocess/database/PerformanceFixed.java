@@ -30,4 +30,9 @@ public class PerformanceFixed {
     public MeasurementFixed getMeasurement(String methodName) {
         return measurements.get(methodName);
     }
+    
+    public boolean hasMeasurement(String methodName) {
+        return measurements.containsKey(methodName);
+    }
+    
 }

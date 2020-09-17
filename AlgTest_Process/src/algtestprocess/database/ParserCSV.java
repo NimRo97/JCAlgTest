@@ -5,11 +5,12 @@
  */
 package algtestprocess.database;
 
-import static algtestprocess.database.DatabaseUtils.ANOTATED_ALGORITHMS_FILE;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +40,7 @@ public class ParserCSV {
         
         List<String> lines;
         PerformanceFixed results = null;
-        System.out.println(path + ": ");
+        
         try (Stream<String> input = Files.lines(Paths.get(path))) {
             lines = input.collect(Collectors.toList());
         } catch (IOException ex) {
@@ -60,9 +61,9 @@ public class ParserCSV {
             
             if (data[0].equals(METHOD_NAME_FIELD)) {
                 String methodName = data[1].strip();
-                if (!DatabaseUtils.algorithmList.contains(methodName)) {
-                    System.out.println("    " + methodName);
-                }
+                
+                DatabaseUtils.foundAlgorithms.add(methodName);
+                
                 MeasurementFixed m = parseMeasurement(methodName, lines, i + 1);
                 results.putMeasurement(m);
             }

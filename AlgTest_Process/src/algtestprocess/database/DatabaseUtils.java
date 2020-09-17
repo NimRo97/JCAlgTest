@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,28 +23,45 @@ public class DatabaseUtils {
     
     public static final int MEASURES_COUNT = 5;
     public static final int TARGET_OPERATION_COUNT = 50;
-    public static final String ANOTATED_ALGORITHMS_FILE = "annotated_algorithms.list";
+    public static final String ANNOTATED_ALGORITHMS_FILE = "annotated_algorithms.list";
+    public static final String NEW_ALGORITHMS_FILE = "all_algorithms.list";
     
-    public static List<String> algorithmList;
+    public static Set<String> algorithms;
+    public static Set<String> newAlgorithms;
+    public static Set<String> foundAlgorithms;
     
     private static final DatabaseUtils databaseUtils = new DatabaseUtils();
     
     private DatabaseUtils() {
         
         List<String> input;
-        algorithmList = new ArrayList<>();
+        algorithms = new HashSet<>();
+        newAlgorithms = new HashSet<>();
+        foundAlgorithms = new HashSet<>();
         
-        try (Stream<String> lines = Files.lines(Paths.get(ANOTATED_ALGORITHMS_FILE))) {
+        try (Stream<String> lines = Files.lines(Paths.get(ANNOTATED_ALGORITHMS_FILE))) {
             input = lines.collect(Collectors.toList());
         } catch (IOException ex) {
             System.out.println("ERROR: annotated_algorithms.list not found");
             return;
         }
         
-        input.remove("");
-        input.forEach(line -> {
-            algorithmList.add(line.split(";")[0]);
-        });
+        for (String line : input) {
+            algorithms.add(line.strip().split(";")[0]);
+        }
+        algorithms.remove("");
+        
+        try (Stream<String> lines = Files.lines(Paths.get(NEW_ALGORITHMS_FILE))) {
+            input = lines.collect(Collectors.toList());
+        } catch (IOException ex) {
+            System.out.println("ERROR: annotated_algorithms.list not found");
+            return;
+        }
+        
+        for (String line : input) {
+            newAlgorithms.add(line.strip());
+        }
+        newAlgorithms.remove("");
     }
     
     public static DatabaseUtils getInstance() {
